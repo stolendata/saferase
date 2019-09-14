@@ -5,7 +5,7 @@
 #include <sys/time.h>
 
 #define PASSES      2
-#define BUFFER_SIZE	65536
+#define BUFFER_SIZE 65536
 
 // ranrot-b prng
 uint32_t rrb_rand( uint32_t seed )
@@ -57,7 +57,7 @@ int main( int argc, char **argv )
     if( !buffer )
         return 1;
 
-    // delete the whole list of files each pass, to try ensure flushing to disk
+    // overwrite the whole list of files each pass, to try ensure flushing to disk
     printf( "\n" );
     int p = PASSES, c = 0;
     while( p-- )
@@ -79,9 +79,9 @@ int main( int argc, char **argv )
             fseek( file, 0, SEEK_SET );
 
             // fill buffer with random data, then flush to disk
-           	while( size )
-           	{
-           	    int portion = size > BUFFER_SIZE ? BUFFER_SIZE : size;
+            while( size )
+            {
+                int portion = size > BUFFER_SIZE ? BUFFER_SIZE : size;
                 for( int i = 0; i < portion; i++ )
                     buffer[i] = (uint8_t)rrb_rand( 0 );
                 fwrite( buffer, 1, portion, file );
@@ -92,15 +92,17 @@ int main( int argc, char **argv )
 
             if( !p )
             {
-                // rename file before deletion
+                // rename file to something random before deletion
                 char new[strlen(argv[f])];
                 strcpy( new, argv[f] );
                 char *p = strrchr( new, '/' );
                 if( !p )
-                	p = new;
+                    p = new;
+
                 int n = strlen( p ) - 1;
                 while( n )
                     p[n--] = 97 + rrb_rand( 0 ) % 26;
+
                 if( !rename(argv[f], new) && !remove(new) )
                 {
                     printf( "%s ... erased\n", strrchr(argv[f], '/') + 1 );              
