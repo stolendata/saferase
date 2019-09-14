@@ -3,7 +3,7 @@ Saferase
 
 Copyright (c) 2003 Robin Leffmann
 
-Saferase irrecoverably scratches files. This program is only useful against data on magnetic storage; has no effect on flash storage.
+Saferase irrecoverably erases files. This program is only useful against data on magnetic storage; has no effect on flash storage.
 
 
 Donations
